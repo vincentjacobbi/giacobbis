@@ -20,7 +20,7 @@ Redesign of giacobbis.com for Giacobbi's Cucina Citta, 59 Allen St. (at Franklin
 - `Food Gallery/`: dish photos (Chicken_Pix is the Chicken Piccata; Calamari_Mista matches today's Calamari Della Casa) (Lasagna, Chicken_Parm, Calamari_Mista, Bruschetta_trio, Gnocci, Penne_Palermo, Beans+Greens, Mule cocktails)
 - Root + `Pics/`: Inside, Bar_Area, Bar_Seating, Outside_Patio, Steak_Spinach_Pizza, Fruitti Di Mare, meatball, and the 2016 Buffalo News photo `1006307600-Giacobbis-16-Ca4.jpg` (by Sharon Cantillon, The Buffalo News; credited on the site; get permission before launch)
 - `Janice Okun/`: newspaper clippings (Charlesgate 1987, Giacobbi's 1995; the Il Fiorentino ones are excluded)
-- `Recipes/Photos-1-001/`: 31 HEIC photos of family recipe cards. Transcriptions are in `recipes/recipes.json`, which is **git-ignored on purpose** because the repo is public. Each recipe has `approved_to_publish: false`. Publish a recipe only after the family approves it.
+- `Recipes/Photos-1-001/`: 32 HEIC photos, mostly typed kitchen prep sheets from the Carmine's and Giacobbi's "Corporate Recipes" binder (13 with handwritten edits; Pork Rub is fully handwritten). These are proprietary house recipes. Transcriptions are in `recipes/recipes.json`, which is **git-ignored on purpose** because the repo is public. Each recipe has `approved_to_publish: false`. Publish a recipe only after the family approves it.
 - `Menus/`: 2016 menus, which are outdated. The current menus are images on giacobbis.com/dining-menu/ (placemat Nov 2026 + party menu) and /catering-menus/ (drop-off menu + trays, 2025). They're transcribed into `MENU`, `PARTY`, `DROPOFF` and `TRAYS` in `build.mjs`. Re-check them when the live images change.
 
 ## Copyright caution
