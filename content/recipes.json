@@ -1,0 +1,158 @@
+{
+  "note": "Published family recipes, copied from the private recipes/recipes.json after the family approved them for the demo (Nov 2026). Quantities are restaurant batch sizes, as written.",
+  "recipes": [
+    {
+      "id": "greens",
+      "title": "Greens",
+      "yield": "1 Fish Bin",
+      "ingredients": [
+        "1Case Escarole",
+        "2 Bags Chopped Swiss chard or Rapini",
+        "1/2Cup Seasoning Salt",
+        "1.5Cups Olive Oil",
+        "1Cup Minced Garlic",
+        "1/2 Cup Chicken Consume",
+        "1Tbls Black Pepper",
+        "1Tbls Crushed Red Pepper"
+      ],
+      "steps": [
+        "- Bring large stock pot 3/4's full of water to a boil. Add Escarole and Greens and cook till escarole is soft – approx 10-12minutes – Drain, shock with cold water. Press and drain in colander using a small pizza pan with a 5 gallon bucket of water on top for at least 1/2 an hour. Then add spices and oils."
+      ],
+      "from": "Carmine's → Giacobbi's",
+      "blurb": "The base of our Beans & Greens and the Steak Giacobbi. It started as a Carmine's sheet: someone crossed out \"Carmines,\" wrote in \"Giacobbi's,\" and swapped the frozen collards for Swiss chard or rapini.",
+      "marks": [
+        "Giacobbi's",
+        "Swiss chard or Rapini"
+      ]
+    },
+    {
+      "id": "pasta-fazool",
+      "title": "Pasta Fazool",
+      "yield": "4 Gallons",
+      "ingredients": [
+        "1 1/2 gal Water",
+        "1/2 cont Ham base",
+        "2 Teas. Black Pepper",
+        "1/2 Teas. Crushed Red Pepper",
+        "2 cup diced Carrots",
+        "2 cup diced Onions",
+        "2 cup diced Celery",
+        "1 ricotta bkt. Marinara sauce",
+        "3 #10 cans Great Northern Beans",
+        "1 lb Bacon … Diced and well browned",
+        "1 teasp Liquid Smoke",
+        "1 cup Sherry wine",
+        "1 large ladle Marinara sc",
+        "2 cups Parm cheese"
+      ],
+      "steps": [
+        "- Use the the large 8 gal pot. Add water, base, spices & cut veg to stock pot. Bring to boil. Then add the can of Marinara & boil again. Next add 2 & 1/2 cans of Great Northern beans. Still well – & often!",
+        "* While you are boiling the stock & veg take the bacon and brown in a large sauté pan. Brown to crisp and add sherry, smoke and marinara. Puree this mix with other 1/2 can of Great Northern Beans.",
+        "When soup is almost done add this bean paste mix to thicken the soup. Still well. Add parmesan and stir. Turn down the burner & simmer for 40 min.",
+        "When done – stir well and divide into 5 or 6 buckets and chill."
+      ],
+      "from": "Giacobbi's",
+      "blurb": "On today's menu as Pasta e Fagiole, marked \"family recipe.\" The kitchen makes it four gallons at a time.",
+      "marks": []
+    },
+    {
+      "id": "meat-balls-10-pound-batch",
+      "title": "Meat Balls (10 Pound Batch)",
+      "yield": "1 Fish Bin",
+      "ingredients": [
+        "1 lg onion-minced",
+        "1 tbl minced garlic",
+        "5 Lbs. Ground Beef",
+        "5 Lbs. Bulk Sausage",
+        "2 Cups Italian Bread Crumbs",
+        "1 Cup Parm Cheese",
+        "1 teas. Pepper",
+        "1/2 Cup Dry Oregano/Basil Mix",
+        "1 tbl Fresh basil",
+        "3 Eggs"
+      ],
+      "steps": [
+        "- Pull meat ahead of time and put into bus pan and let come close to room temp.(Makes Mixing Easier). Sautee garlic and onion until clear. Mix all ingredients and meat together until COMPLETELY combined. Roll meatballs into 5 oz smooth balls. Put 4x7 in hotel pans, foil covered, with an inch of water in pan in regular ovens at 400 degrees for 45 minutes. Drain and allow to cool. For larger batches do multiple 20 pound mixes."
+      ],
+      "from": "Carmine's",
+      "blurb": "The ten-pound batch. For a busy weekend, the card says to do several twenty-pound mixes.",
+      "marks": []
+    },
+    {
+      "id": "short-rib-meatballs",
+      "title": "Short Rib Meatballs",
+      "yield": "I TUB",
+      "ingredients": [
+        "CARROTS — 2",
+        "ONION — 2",
+        "Port wine — 1cup",
+        "GARLIC-pureed — 3 TBLS",
+        "PANKO BC — 1 1/2 CUP",
+        "EGGS — 4 BEATEN",
+        "BREAD CRUMBS — 2 CUP",
+        "FRESH BASIL — 1 TBLS",
+        "PARM MIX — 1 CUP",
+        "GRUOND SAUSAGE — 4LBS",
+        "GROUND BEEF — 2.5LBS",
+        "Cooked SHORT RIB — 4LBS"
+      ],
+      "steps": [
+        "Mince onion & carrot together w/ Port & sautee",
+        "Mix all ingredients in mixing bowl and then portion into 4.5 oz balls",
+        "bake uncovered for 30- 40 minutes in 2\" hotels pans with 1/2 inch of water",
+        "when out of oven drain water off and cool rapidly"
+      ],
+      "from": "Carmine's",
+      "blurb": "A Carmine's card with the kitchen's edits still on it: more panko, bigger meatballs, and \"cut in half\" scrawled next to the yield.",
+      "marks": [
+        "Cut in half",
+        "1 1/2",
+        "4.5 oz"
+      ]
+    },
+    {
+      "id": "cannoli-mix",
+      "title": "Cannoli Mix",
+      "yield": "1 Tub",
+      "ingredients": [
+        "1 Tub Ricotta Cheese *Red Label ONLY",
+        "3/4 Cup Granulated Sugar",
+        "1Lb(1/2 Bag) Powdered Sugar",
+        "6oz Vanilla Extract",
+        "1/2 Cup Milk",
+        "2Cups Choc. Chips- mini"
+      ],
+      "steps": [
+        "-Add all ingredients to mixer and mix on 1st speed for 3-4 minutes."
+      ],
+      "from": "Carmine's",
+      "blurb": "Red-label ricotta only. Somewhere along the way the sugar came down to 3/4 cup and the chips went mini.",
+      "marks": [
+        "3/4",
+        "mini"
+      ]
+    },
+    {
+      "id": "gia-santgria",
+      "title": "Gia SantGria",
+      "yield": null,
+      "ingredients": [
+        "Red wine (cab ) — 2 btls (750 )",
+        "Peach Schnapps — 2 cups",
+        "Ras Liquer — 1 cup",
+        "OJ — 4 cups",
+        "Stoli O — 1 cup",
+        "Lemoncella — 1/2 cup",
+        "Sugar — 1/3 cup",
+        "Lemon — squeeze 1/2 lemon"
+      ],
+      "steps": [
+        "Mix and stir / chill",
+        "Garnish with cherry & orange & ice !"
+      ],
+      "from": "Carmine's",
+      "blurb": "The house sangria from the Transit Road days: cabernet, peach schnapps, raspberry liqueur and limoncello.",
+      "marks": []
+    }
+  ]
+}

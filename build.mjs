@@ -1,5 +1,8 @@
 // Generates the static pages from shared parts. Run: node build.mjs
-import { writeFileSync } from "node:fs";
+import { writeFileSync, readFileSync } from "node:fs";
+
+// Family recipes the family approved for the site (the full private transcriptions live in git-ignored recipes/).
+const RECIPES = JSON.parse(readFileSync("content/recipes.json", "utf8")).recipes;
 
 const R = {
   name: "Giacobbi's Cucina Citta",
@@ -244,7 +247,7 @@ const page = (title, desc, active, main, extraSchema = [], path = "/") => `<!doc
 <meta property="og:image" content="https://giacobbis.com/assets/img/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Giacobbi's Cucina Citta logo">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Gloock&family=Libre+Franklin:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Courier+Prime&family=Gloock&family=Reenie+Beanie&family=Libre+Franklin:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 ${[schema, ...extraSchema].map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")}
 </head><body>
@@ -389,6 +392,10 @@ const PRESS = [
 ];
 const pressItem = (x) => `<div class="pr-item"><span class="pr-y">${x.y}</span><div><b>${x.src}</b><br><span>${x.t}</span>${x.thumb ? `
       <a class="pr-thumb" href="${x.url}" target="_blank" rel="noopener"><img src="/assets/img/press/${x.thumb}.jpg" alt="${x.alt}" loading="lazy"><small>${x.cite} · view on Newspapers.com ↗</small></a>` : ""}</div></div>`;
+const esc = (t) => String(t).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+const ingRow = (x) => { const [n, q] = x.split(" — "); return q ? `<li><span>${esc(n)}</span><span>${esc(q)}</span></li>` : `<li><span>${esc(x)}</span></li>`; };
+const recipeCard = (r) => `<details class="recipe-card"><summary><div class="rc-from">${esc(r.from)}</div><h3>${esc(r.title)}</h3>${r.yield ? `<p class="rc-yield">Yield: ${esc(r.yield)}</p>` : ""}<p>${esc(r.blurb)}</p>${r.marks.length ? `<p class="rc-marks">${r.marks.map(esc).join(" · ")}</p>` : ""}<span class="rc-open">Read the card</span></summary>
+      <div class="rc-body"><h4>Ingredients</h4><ul class="rc-ing">${r.ingredients.map(ingRow).join("")}</ul>${r.steps.length ? `<h4>Procedure</h4>${r.steps.map((x) => `<p>${esc(x.replace(/^-\s*/, ""))}</p>`).join("")}` : ""}</div></details>`;
 const storyPage = page(
   "Our Family | A Buffalo Restaurant Lineage | Giacobbi's Cucina Citta",
   "The Jacobbi family's Buffalo restaurant history, from The Charlesgate and Giacobbi's Italian Oven on Transit Road to Carmine's and Giacobbi's Cucina Citta on Allen Street.",
@@ -412,13 +419,12 @@ const storyPage = page(
   <div class="press">${PRESS.map(pressItem).join("")}</div>
   <p class="fine-print">Headlines © The Buffalo News, shown as small thumbnails linking to the original pages on Newspapers.com.</p>
 
-  <h2 style="font-size:32px;margin-top:64px">The family recipes</h2>
-  <div class="grid" style="margin-top:20px">
-    <div class="card"><span class="eyebrow" style="color:var(--basil)">From Carmine's</span><h3 style="margin-top:6px">Eggplant Lasagne</h3><p style="color:var(--muted)">Fried eggplant layered in place of pasta. Still made for parties and catering trays.</p></div>
-    <div class="card"><span class="eyebrow" style="color:var(--basil)">From the Transit Road days</span><h3 style="margin-top:6px">Beans & Greens</h3><p style="color:var(--muted)">Sautéed fava beans and greens were an old-time favorite back in 1995. Today's version adds cannellini and crispy pancetta, and it's the base of the Steak Giacobbi.</p></div>
-    <div class="card"><span class="eyebrow" style="color:var(--basil)">Family recipes on today's menu</span><h3 style="margin-top:6px">Clams Casino & Pasta e Fagiole</h3><p style="color:var(--muted)">Both are marked "family recipe" on the current placemat.</p></div>
+  <h2 style="font-size:32px;margin-top:64px">From the family binder</h2>
+  <p class="sub">The kitchen still cooks from a binder of typed sheets in plastic sleeves, most of them carried over from Carmine's, with decades of pencil and marker on top. Here are a few, exactly as written. Quantities are restaurant batches, so you may want to cut them down.</p>
+  <div class="recipes">
+    ${RECIPES.map(recipeCard).join("\n    ")}
+    <div class="recipe-card secret"><div class="rc-from">Giacobbi's</div><h3>Giacobbi's Red Sauce</h3><p class="rc-yield">Yield: about 9 gallons</p><p>The house red sauce, made nine gallons at a time. This card stays in the binder.</p><span class="rc-stamp">Family only</span></div>
   </div>
-  <p class="note" style="margin-top:18px"><b>Staging note:</b> the recipe cards from the family's Recipes folder are being transcribed. Only the ones the family chooses to share will appear here.</p>
   <p style="margin-top:36px">Have a question about a family dish? <a href="#" data-open-chat>Ask our concierge →</a></p>
 </div></section>`, [], "/story.html"
 );

@@ -255,3 +255,33 @@ table.trays th{font:400 11px var(--stamp);text-transform:uppercase;color:var(--m
 table.trays td{padding:7px 0;border-bottom:1px dashed var(--line);vertical-align:top}
 table.trays td:not(:first-child){text-align:right;white-space:nowrap;padding-left:10px}
 table.trays td:last-child{color:var(--tomato);font-family:var(--display);font-size:17px}
+
+/* ---------- family binder: recipe index cards ---------- */
+.recipes{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:24px;align-items:start}
+@media (max-width:700px){.recipes{grid-template-columns:1fr}}
+.recipe-card{position:relative;background:#fffdf6 repeating-linear-gradient(180deg,transparent 0 27px,rgba(3,58,77,.13) 27px 28px);border:2px solid var(--ink);border-top:6px solid var(--tomato);border-radius:3px;padding:18px 20px 20px;box-shadow:4px 4px 0 var(--ink);font-family:"Courier Prime","Courier New",monospace;font-size:14.5px;line-height:28px}
+.recipe-card:nth-child(even){transform:rotate(.5deg)}
+.recipe-card:nth-child(odd){transform:rotate(-.4deg)}
+.recipe-card summary{list-style:none;cursor:pointer}
+.recipe-card summary::-webkit-details-marker{display:none}
+.recipe-card h3{font-family:var(--display);font-size:25px;line-height:28px;margin:2px 0 0}
+.recipe-card p{margin:0 0 0}
+.rc-from{font:400 11.5px/28px var(--stamp);text-transform:uppercase;color:var(--vespa-dk);letter-spacing:.03em}
+.rc-yield{color:var(--muted)}
+.rc-marks{font-family:"Reenie Beanie",cursive;font-size:25px;color:#1f4fa0;line-height:28px;margin-top:2px;transform:rotate(-1deg)}
+.rc-open{display:inline-block;margin-top:8px;font:700 12.5px/1 var(--sans);text-transform:uppercase;letter-spacing:.05em;color:var(--tomato);border-bottom:2px solid currentColor;padding-bottom:2px}
+.rc-open::after{content:" ↓"}
+details[open] .rc-open::after{content:" ↑"}
+.rc-body h4{font:400 12px/28px var(--stamp);text-transform:uppercase;margin:12px 0 0;letter-spacing:.03em}
+.rc-body p{margin:0 0 0}
+.rc-ing{list-style:none;margin:0;padding:0}
+.rc-ing li{display:flex;gap:8px}
+.rc-ing li span:first-child{flex:1;display:flex;gap:6px}
+.rc-ing li span:first-child::after{content:"";flex:1;border-bottom:2px dotted rgba(42,26,23,.35);margin-bottom:8px}
+.rc-ing li:not(:has(span+span)) span:first-child::after{display:none}
+.recipe-card.secret{background:var(--espresso);color:#eadfca;border-top-color:var(--vespa)}
+.recipe-card.secret h3{color:#fff}
+.recipe-card.secret .rc-from{color:var(--vespa)}
+.recipe-card.secret .rc-yield{color:#c9b8a5}
+.rc-stamp{position:absolute;right:16px;bottom:14px;font:400 15px/1 var(--stamp);text-transform:uppercase;color:var(--tomato);border:3px solid var(--tomato);padding:6px 10px;transform:rotate(-9deg);opacity:.95;background:rgba(51,27,26,.6)}
+.recipe-card.secret p:last-of-type{padding-bottom:36px}
