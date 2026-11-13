@@ -1,5 +1,7 @@
 // Generates the static pages from shared parts. Run: node build.mjs
 import { writeFileSync, readFileSync } from "node:fs";
+import { logoSVG } from "./logo.mjs";
+const GOLD = "#d4b25e", CHOC = "#3b2417";
 
 // Family recipes the family approved for the site (the full private transcriptions live in git-ignored recipes/).
 const RECIPES = JSON.parse(readFileSync("content/recipes.json", "utf8")).recipes;
@@ -129,26 +131,18 @@ const pic = (file, alt, sizes = "(max-width:820px) 100vw, 400px", eager = false)
 
 // Round sticker badge with arched lettering (SVG). Colors: [face, text/ring].
 let stickerId = 0;
-const SCOOTER = `<g transform="translate(100 104) scale(1.05)" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round">
-  <path d="M-44 12 C-48 -4 -38 -12 -24 -12 L-6 -12 C0 -12 3 -8 4 -2 L8 10 Z" fill="currentColor"/>
-  <path d="M8 10 L26 10 L34 -22" fill="none"/>
-  <path d="M22 11 C22 -4 26 -16 32 -22 L38 -20 C34 -10 34 2 36 11 Z" fill="currentColor"/>
-  <rect x="-38" y="-19" width="26" height="7" rx="3.5" fill="var(--ink)"/>
-  <path d="M28 -27 L42 -27" fill="none"/><circle cx="41" cy="-20" r="3.5" fill="#fff8ec"/>
-  <circle cx="-30" cy="18" r="10" fill="var(--ink)"/><circle cx="-30" cy="18" r="3.5" fill="#fff8ec"/>
-  <circle cx="32" cy="18" r="10" fill="var(--ink)"/><circle cx="32" cy="18" r="3.5" fill="#fff8ec"/>
-</g>`;
-const sticker = ({ top, bottom, mid = "", small = "", face = "var(--tomato)", ink = "#fff8ec", cls = "", label, art = "" }) => {
+
+const sticker = ({ top, bottom, mid = "", small = "", face = "var(--red)", ink = "#fbeed0", cls = "", label, art = "" }) => {
   const id = `st${++stickerId}`;
   const midSize = mid.length > 5 ? 30 : 40;
   return `<div class="sticker ${cls}" role="img" aria-label="${label || [top, mid, small, bottom].filter(Boolean).join(" ")}"><svg viewBox="0 0 200 200" aria-hidden="true" style="color:${ink}">
   <defs><path id="${id}t" d="M32 100 A68 68 0 0 1 168 100"/><path id="${id}b" d="M14 100 A86 86 0 0 0 186 100"/></defs>
-  <circle cx="100" cy="100" r="97" fill="${face}" stroke="var(--ink)" stroke-width="3"/>
+  <circle cx="100" cy="100" r="97" fill="${face}" stroke="${CHOC}" stroke-width="4"/><circle cx="100" cy="100" r="90" fill="none" stroke="${ink}" stroke-width="1.2"/>
   <circle cx="100" cy="100" r="60" fill="none" stroke="${ink}" stroke-width="1.6"/>
-  <text font-family="Bowlby One, Impact, sans-serif" font-size="17" letter-spacing="1.5" fill="${ink}"><textPath href="#${id}t" startOffset="50%" text-anchor="middle">${top}</textPath></text>
-  <text font-family="Bowlby One, Impact, sans-serif" font-size="15" letter-spacing="1.5" fill="${ink}"><textPath href="#${id}b" startOffset="50%" text-anchor="middle">${bottom}</textPath></text>
+  <text font-family="EB Garamond, Georgia, serif" font-weight="800" font-size="19" letter-spacing="2.5" fill="${ink}"><textPath href="#${id}t" startOffset="50%" text-anchor="middle">${top}</textPath></text>
+  <text font-family="EB Garamond, Georgia, serif" font-weight="800" font-size="17" letter-spacing="2.5" fill="${ink}"><textPath href="#${id}b" startOffset="50%" text-anchor="middle">${bottom}</textPath></text>
   <text x="20" y="106" font-size="13" fill="${ink}">✦</text><text x="168" y="106" font-size="13" fill="${ink}">✦</text>
-  ${art || `<text x="100" y="${small ? 106 : 114}" text-anchor="middle" font-family="Gloock, Georgia, serif" font-size="${midSize}" fill="${ink}">${mid}</text>${small ? `<text x="100" y="128" text-anchor="middle" font-family="Bowlby One, Impact, sans-serif" font-size="11" letter-spacing="1" fill="${ink}">${small}</text>` : ""}`}
+  ${art || `<text x="100" y="${small ? 106 : 114}" text-anchor="middle" font-family="EB Garamond, Georgia, serif" font-weight="800" font-size="${midSize + 4}" fill="${ink}">${mid}</text>${small ? `<text x="100" y="128" text-anchor="middle" font-family="Courier Prime, monospace" font-weight="700" font-size="12" letter-spacing="1" fill="${ink}">${small}</text>` : ""}`}
 </svg></div>`;
 };
 const pageHero = (kicker, title, lead, img, alt, st) => `
@@ -162,7 +156,7 @@ const schema = {
   "@type": "Restaurant",
   name: R.name,
   image: ["https://giacobbis.com/assets/img/outside-patio.jpg", "https://giacobbis.com/assets/img/inside.jpg"],
-  logo: "https://giacobbis.com/assets/img/logo.jpg",
+  logo: "https://giacobbis.com/assets/img/og-image.jpg",
   servesCuisine: ["Italian", "Italian-American"],
   priceRange: "$$",
   telephone: R.tel,
@@ -209,7 +203,7 @@ const menuSchema = {
 const nav = (active) => `
 <div class="demo-banner"><b>Staging preview</b> · A redesign concept for Giacobbi's. Menu prices are from the current menu; some copy is draft.</div>
 <header class="nav"><div class="wrap">
-  <a class="brand" href="/" aria-label="Giacobbi's Cucina Citta, home"><img src="/assets/img/logo-wide.jpg" width="410" height="190" alt="Giacobbi's Cucina Citta"></a>
+  <a class="brand" href="/" aria-label="Giacobbi's Cucina Citta, home">${logoSVG({ ink: GOLD, paper: CHOC, id: "hdr" })}</a>
   <button class="menu-toggle" aria-label="Menu" onclick="document.querySelector('nav.links').classList.toggle('open')">☰</button>
   <nav class="links">
     ${[["/menu.html", "Menu"], ["/story.html", "Our Family"], ["/catering.html", "Catering"], ["/#visit", "Visit"]]
@@ -223,7 +217,7 @@ const footer = `
 <div class="awning" aria-hidden="true"></div>
 <footer><div class="wrap">
   <div class="cols">
-    <div><a class="foot-logo" href="/"><img src="/assets/img/logo-wide.jpg" width="410" height="190" alt="Giacobbi's Cucina Citta" loading="lazy"></a>
+    <div><a class="foot-logo" href="/">${logoSVG({ ink: GOLD, paper: CHOC, id: "ftr" })}</a>
       <p style="max-width:380px">Italian-American cooking from the Jacobbi family, on Allen Street in the heart of Allentown. From the Charlesgate to Allen Street.</p></div>
     <div><b>Visit</b><br>${R.street} at Franklin<br>${R.city}, ${R.region} ${R.zip}<br><a href="tel:${R.tel}">${R.phone}</a></div>
     <div><b>Elsewhere</b><br><a href="${R.resy}">Resy</a><br><a href="${R.order}">Order pickup</a><br><a href="${R.doordash}">DoorDash</a><br><a href="${R.facebook}">Facebook</a></div>
@@ -239,15 +233,15 @@ const page = (title, desc, active, main, extraSchema = [], path = "/") => `<!doc
 <title>${title}</title>
 <meta name="description" content="${desc}">
 <meta name="robots" content="noindex,nofollow">
-<meta name="theme-color" content="#331b1a">
-<link rel="icon" type="image/png" href="/assets/img/favicon.png">
+<meta name="theme-color" content="#3b2417">
+<link rel="icon" type="image/png" href="/assets/img/favicon.png"><link rel="icon" type="image/svg+xml" href="/assets/img/favicon.svg">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <meta property="og:title" content="${title}"><meta property="og:description" content="${desc}"><meta property="og:type" content="restaurant">
 <meta property="og:url" content="https://giacobbis.com${path}">
 <meta property="og:image" content="https://giacobbis.com/assets/img/og-image.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Giacobbi's Cucina Citta logo">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bowlby+One&family=Courier+Prime&family=Gloock&family=Reenie+Beanie&family=Libre+Franklin:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;0,800;1,400;1,600&family=Reenie+Beanie&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/assets/site.css">
 ${[schema, ...extraSchema].map((s) => `<script type="application/ld+json">${JSON.stringify(s)}</script>`).join("\n")}
 </head><body>
@@ -278,26 +272,27 @@ const home = page(
   "",
   `
 <section class="hero"><div class="wrap">
-  <div>
-    <div class="eyebrow">Allentown · Buffalo, New York</div>
-    <h1>Family recipes, <em>city kitchen.</em></h1>
-    <p class="lead">Italian-American cooking from the Jacobbi family, a Buffalo restaurant family since the Charlesgate. Generous plates, Friday fish fry and a bar that opens at 4:30, on Allen Street at Franklin.</p>
+  <div class="cover">
+    <h1 class="mark" style="margin:0">${logoSVG({ id: "hero", ink: CHOC, paper: GOLD })}</h1>
+    <p class="tag">A Buffalo restaurant family since the Charlesgate</p>
+    <p class="addr">${R.street} at Franklin · Allentown</p>
     <div class="ctas">
       <a class="btn primary" href="${R.resy}" target="_blank" rel="noopener">Reserve a table</a>
       <a class="btn ghost" href="${R.order}" target="_blank" rel="noopener">Order pickup</a>
-      <a class="btn light" href="#" data-open-chat>Ask the concierge</a>
+      <a class="btn ghost" href="#" data-open-chat>Ask the concierge</a>
     </div>
+  </div>
+  <div class="hero-side">
+    <h2 class="misprint">Family recipes, <em>city kitchen.</em></h2>
+    <p class="lead">Italian-American cooking from the Jacobbi family. Generous plates, Friday fish fry and a bar that opens at 4:30, on Allen Street at Franklin.</p>
+    <figure class="snap">${pic("outside-patio", "The Giacobbi's storefront and patio on Allen Street", "(max-width:880px) 90vw, 480px", true)}<figcaption>59 Allen Street, Allentown</figcaption>
+      ${sticker({ top: "SINCE THE", bottom: "CHARLESGATE", mid: "1987" })}</figure>
     <div class="ticket">
       <div><b>Wed–Sat</b>Bar 4:30 · Kitchen 5–10</div>
       <div><b>Sunday</b>4–9pm</div>
-      <div><b>${R.street}</b>at Franklin</div>
-      <div><b>${R.phone}</b>Call ahead</div>
+      <div><b>Mon–Tue</b>Closed</div>
+      <div><b>Fridays</b>Fish fry</div>
     </div>
-  </div>
-  <div class="arch">
-    <div class="frame">${pic("outside-patio", "The Giacobbi's storefront and patio on Allen Street", "(max-width:860px) 90vw, 440px", true)}</div>
-    ${sticker({ top: "SINCE THE", bottom: "CHARLESGATE", mid: "1987", cls: "s1" })}
-    ${sticker({ top: "PICKUP · DELIVERY", bottom: "ALLEN ST · BUFFALO", face: "var(--vespa)", ink: "var(--ink)", cls: "s2", art: SCOOTER, label: "Pickup and delivery from Allen Street, Buffalo" })}
   </div>
 </div></section>
 
@@ -362,7 +357,7 @@ const menuPage = page(
   "Dining menu at Giacobbi's Cucina Citta in Allentown, Buffalo: beans & greens, calamari, pizza, Penne Pink Vodka, lasagne, chicken piccata, Steak Giacobbi and Friday fish fry.",
   "Menu",
   `
-${pageHero("Dining menu", "The Menu", "Red sauce, family recipes and a Friday fish fry. Kitchen open Wednesday to Saturday 5–10, Sunday 4–9.", "frutti-di-mare", "Fruitti di Mare: clams, shrimp, mussels and calamari over linguine", sticker({ top: "FRIDAY", bottom: "FISH FRY", mid: "★", cls: "s1", face: "var(--teal)", label: "Friday fish fry" }))}
+${pageHero("Dining menu", "The Menu", "Red sauce, family recipes and a Friday fish fry. Kitchen open Wednesday to Saturday 5–10, Sunday 4–9.", "frutti-di-mare", "Fruitti di Mare: clams, shrimp, mussels and calamari over linguine", sticker({ top: "FRIDAY", bottom: "FISH FRY", mid: "★", cls: "s1", face: CHOC, ink: GOLD, label: "Friday fish fry" }))}
 <section style="padding-top:40px"><div class="wrap">
   <p class="note"><b>Staging note:</b> transcribed from the current placemat on giacobbis.com (November 2026). In the live site it's edited from the owner dashboard, and the site, the concierge and the search data all update together.</p>
   <div class="menu-nav">${MENU.map((s) => `<a href="#${s.id}">${s.title}</a>`).join("")}</div>
@@ -379,7 +374,7 @@ ${pageHero("Dining menu", "The Menu", "Red sauce, family recipes and a Friday fi
 // ---------- Story ----------
 const TIMELINE = [
   { era: "Where it started", t: "The Charlesgate", d: "The family's landmark restaurant on Transit Road in Williamsville, remembered as a local legend. The Buffalo News reviewed it in November 1987." },
-  { era: "The '90s", t: "Giacobbi's Italian Oven & Rotisserie", d: "Opened at 4715 Transit Road on the Charlesgate site. It served Sicilian specialties, wood-fired pizza and family-style portions meant to feed the whole table. A second location, Giacobbi's Trattoria, opened on Main Street at Eggert." },
+  { era: "The '90s", t: "Giacobbi's Italian Oven & Rotisserie", d: "Opened at 4715 Transit Road on the Charlesgate site. It served Sicilian specialties, wood-fired pizza and family-style portions meant to feed the whole table. A second location, Giacobbi's Trattoria, opened at 3945 Main Street, on the corner of Main & Eggert in Eggertsville. Its gold matchbooks carried the oven logo you see at the top of this page." },
   { era: "Decades on Transit", t: "Carmine's", d: "For years the family ran Carmine's on Transit Road. That's where the eggplant lasagna became a favorite. A fire closed it in 2015." },
   { era: "2016 to today", t: "Giacobbi's Cucina Citta", d: "Cousins Billy and Mike Jacobbi brought the family's recipes downtown to 59 Allen Street in Allentown and served the first meal in May 2016." },
 ];
@@ -402,7 +397,7 @@ const storyPage = page(
   "Our Family",
   `
 <section><div class="wrap story-head" style="max-width:820px">
-  ${sticker({ top: "A BUFFALO FAMILY", bottom: "SINCE THE CHARLESGATE", mid: "1987", face: "var(--vespa)", ink: "var(--ink)" })}
+  ${sticker({ top: "A BUFFALO FAMILY", bottom: "SINCE THE CHARLESGATE", mid: "1987", face: GOLD, ink: CHOC })}
   <div class="eyebrow">Our family</div>
   <h1 style="font-size:clamp(44px,6.4vw,72px);margin:14px 0 20px;line-height:1">A Buffalo restaurant family, since the Charlesgate</h1>
   <p class="sub">When you order from Giacobbi's, you're ordering from a family that has cooked for Western New York for generations: the Charlesgate, Giacobbi's on Transit, Carmine's, and now Allen Street.</p>
@@ -506,7 +501,7 @@ const menuData = {
 // ---------- GEO / crawler files ----------
 const llms = `# Giacobbi's Cucina Citta
 
-> Family-owned Italian-American restaurant at 59 Allen St. (at Franklin), Buffalo, NY 14202, in the Allentown neighborhood. Owned by cousins Billy and Mike Jacobbi, part of a Buffalo restaurant family whose restaurants include The Charlesgate (Transit Road, Williamsville), Giacobbi's Italian Oven & Rotisserie (4715 Transit Road, 1990s), Giacobbi's Trattoria (Main St. at Eggert) and Carmine's (Transit Road, closed after a 2015 fire). Open since May 2016.
+> Family-owned Italian-American restaurant at 59 Allen St. (at Franklin), Buffalo, NY 14202, in the Allentown neighborhood. Owned by cousins Billy and Mike Jacobbi, part of a Buffalo restaurant family whose restaurants include The Charlesgate (Transit Road, Williamsville), Giacobbi's Italian Oven & Rotisserie (4715 Transit Road, 1990s), Giacobbi's Trattoria (3945 Main St. at Eggert, Eggertsville) and Carmine's (Transit Road, closed after a 2015 fire). Open since May 2016.
 
 ## Essentials
 - Phone: ${R.phone}
