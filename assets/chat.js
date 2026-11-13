@@ -1,0 +1,114 @@
+// Demo concierge. Scripted for the staging preview; the live version would call an AI model
+// grounded in the menu, hours, family stories and catering info, with Resy / ordering hand-offs.
+(function () {
+  const RESY = "https://resy.com/cities/buffalo-ny/venues/giacobbis";
+  const ORDER = "https://ordering.chownow.com/order/20612/locations";
+  const DOORDASH = "https://www.doordash.com/store/giacobbi's-cucina-citta-buffalo-36517553/82092749/";
+
+  const fab = document.createElement("button");
+  fab.className = "chat-fab";
+  fab.innerHTML = "<span>💬</span> Ask Giacobbi's";
+  const panel = document.createElement("div");
+  panel.className = "chat-panel";
+  panel.innerHTML = `
+    <div class="chat-head"><div><b>Giacobbi's Concierge</b><small>Reservations · orders · catering · family recipes</small></div><button aria-label="Close">×</button></div>
+    <div class="chat-body"></div>
+    <div class="chips"></div>
+    <form class="chat-input"><input placeholder="Ask about hours, a table, catering…" aria-label="Message"><button>Send</button></form>`;
+  document.body.append(fab, panel);
+  const body = panel.querySelector(".chat-body");
+  const chips = panel.querySelector(".chips");
+  const form = panel.querySelector("form");
+  const input = form.querySelector("input");
+
+  let flow = null; // catering lead capture
+  let started = false;
+
+  function add(html, who = "bot") {
+    const d = document.createElement("div");
+    d.className = "msg " + who;
+    d.innerHTML = html;
+    body.append(d);
+    body.scrollTop = body.scrollHeight;
+  }
+  function setChips(list) {
+    chips.innerHTML = "";
+    list.forEach((t) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.textContent = t;
+      b.onclick = () => send(t);
+      chips.append(b);
+    });
+  }
+  function reply(html, next) {
+    const t = document.createElement("div");
+    t.className = "msg bot typing";
+    t.textContent = "typing…";
+    body.append(t);
+    body.scrollTop = body.scrollHeight;
+    setTimeout(() => {
+      t.remove();
+      add(html);
+      setChips(next || defaults);
+    }, 550);
+  }
+  const defaults = ["Book a table", "Order pickup", "Catering", "Hours & parking", "Family recipes"];
+
+  function answer(q) {
+    const s = q.toLowerCase();
+    if (flow) return cateringStep(q);
+    if (/(book|reserv|table|tonight|party of)/.test(s))
+      return reply(`I can get you a table. Reservations are handled on Resy, so you'll see live availability there.<br><a class="btn primary" href="${RESY}" target="_blank" rel="noopener">Check availability on Resy</a><br><small>Live version: pick a date and party size here and I'll pull open times for you.</small>`);
+    if (/(order|pickup|pick up|take.?out|deliver)/.test(s))
+      return reply(`Happy to help with that. Pickup orders go through our online ordering, and delivery is on DoorDash.<br><a class="btn primary" href="${ORDER}" target="_blank" rel="noopener">Order pickup</a> <a class="btn ghost" href="${DOORDASH}" target="_blank" rel="noopener">DoorDash</a><br><small>Live version: build the order in chat, then pay by card through a secure checkout connected to the restaurant's system.</small>`);
+    if (/(cater|party|event|office|tray)/.test(s)) {
+      flow = { step: 0, data: {} };
+      return reply("We do drop-off catering for parties and office lunches. What's the date of your event?", []);
+    }
+    if (/(hour|open|close|when)/.test(s))
+      return reply("We're open <b>Wednesday–Saturday</b> (bar 4:30, kitchen 5–10pm) and <b>Sunday 4–9pm</b>. Closed Monday and Tuesday.");
+    if (/(park|where|address|located|direction)/.test(s))
+      return reply("We're at <b>59 Allen St. at Franklin</b> in Allentown. Parking is in the lot behind the restaurant, entered from Delaware next to Tempo. It's public after 6pm on weekdays and all day on weekends.");
+    if (/(recipe|family|nonna|history|story|carmine)/.test(s))
+      return reply(`Giacobbi's comes from the Jacobbi family's long run in Western New York restaurants, including Carmine's on Transit Road. Some dishes, like the eggplant lasagna, came straight from Carmine's.<br><a class="btn ghost" href="/story.html">Read the family story</a><br><small>Live version: answers questions about specific family dishes from stories the family writes.</small>`);
+    if (/(menu|eat|dish|recommend|best|popular|vegetarian)/.test(s))
+      return reply(`Guests love the lasagna, the chicken parm, Tortellini alla Giacobbi and the peanut butter pie. For something with Carmine's history, try the eggplant lasagna.<br><a class="btn ghost" href="/menu.html">See the menu</a>`);
+    if (/(phone|call|contact)/.test(s))
+      return reply(`Call us at <a href="tel:+17168344000">(716) 834-4000</a>.`);
+    return reply("I can help with reservations, pickup orders, catering, hours and parking, or the family's recipes. What do you need?");
+  }
+
+  function cateringStep(q) {
+    const f = flow;
+    if (f.step === 0) { f.data.date = q; f.step = 1; return reply("Great. About how many guests?", ["10–20", "20–40", "40+"]); }
+    if (f.step === 1) { f.data.guests = q; f.step = 2; return reply("Drop-off or pickup?", ["Drop-off", "Pickup"]); }
+    if (f.step === 2) { f.data.mode = q; f.step = 3; return reply("And the best email or phone number to reach you?", []); }
+    if (f.step === 3) {
+      f.data.contact = q;
+      const d = f.data;
+      flow = null;
+      return reply(`Thank you! I've sent your request to our catering team: <b>${esc(d.guests)}</b> guests on <b>${esc(d.date)}</b>, ${esc(d.mode.toLowerCase())}. We'll follow up at ${esc(d.contact)}.<br><small>Demo only, nothing was sent. In the live version this request lands in the admin dashboard and can be confirmed with a card deposit.</small>`);
+    }
+  }
+  function esc(s) { return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c])); }
+
+  function send(text) {
+    if (!text.trim()) return;
+    add(esc(text), "me");
+    answer(text);
+  }
+  function open() {
+    panel.classList.add("open");
+    if (!started) {
+      started = true;
+      add("Ciao! 👋 I'm the Giacobbi's concierge. I can book a table, start a pickup order, plan catering, or tell you about the family's recipes.");
+      setChips(defaults);
+    }
+    input.focus();
+  }
+  fab.onclick = () => (panel.classList.contains("open") ? panel.classList.remove("open") : open());
+  panel.querySelector(".chat-head button").onclick = () => panel.classList.remove("open");
+  form.onsubmit = (e) => { e.preventDefault(); const v = input.value; input.value = ""; send(v); };
+  document.querySelectorAll("[data-open-chat]").forEach((el) => el.addEventListener("click", (e) => { e.preventDefault(); open(); }));
+})();

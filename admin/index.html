@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Owner Dashboard (Demo) · Giacobbi's</title>
+<meta name="robots" content="noindex,nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="/assets/chart.umd.js"></script>
+<style>
+:root{--bg:#f6f3ee;--panel:#fff;--ink:#1f1c18;--muted:#6f675c;--line:#e7dfd2;--tomato:#b3342a;--basil:#2f4a36;--gold:#c9a35a;--blue:#3d6b8c;--good:#2e7d4f;--warn:#b7791f;--bad:#b3342a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink);font-size:14.5px}
+.banner{background:#1f1c18;color:#efe4cf;text-align:center;font-size:13px;padding:8px}
+.banner b{color:var(--gold)}
+.app{display:grid;grid-template-columns:232px 1fr;min-height:calc(100vh - 34px)}
+aside{background:#22301f;color:#dfe6d9;padding:22px 14px;position:sticky;top:0;height:calc(100vh - 34px)}
+aside .brand{font-family:Fraunces,serif;font-size:21px;color:#fff;padding:0 10px 4px}
+aside .brand small{display:block;font-family:Inter;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#a9b8a1;margin-top:2px}
+aside nav{margin-top:26px;display:grid;gap:2px}
+aside button{all:unset;cursor:pointer;padding:10px 12px;border-radius:9px;font-weight:500;display:flex;gap:10px;align-items:center}
+aside button:hover{background:rgba(255,255,255,.07)}
+aside button.on{background:rgba(255,255,255,.13);color:#fff}
+aside .foot{position:absolute;bottom:18px;left:14px;right:14px;font-size:12px;color:#a9b8a1;padding:0 10px}
+aside .foot a{color:#e9c98d}
+main{padding:28px 34px 60px;max-width:1240px}
+h1{font-family:Fraunces,serif;font-weight:500;font-size:32px;margin:0 0 4px}
+.lede{color:var(--muted);margin:0 0 22px}
+.tab{display:none}.tab.on{display:block}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.kpi .l{color:var(--muted);font-size:12.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.kpi .v{font-size:28px;font-weight:700;margin-top:6px;letter-spacing:-.01em;font-variant-numeric:tabular-nums}
+.kpi .d{font-size:13px;margin-top:2px}
+.up{color:var(--good)}.down{color:var(--bad)}
+.row{display:grid;gap:16px;margin-bottom:16px}
+.r21{grid-template-columns:2fr 1fr}.r11{grid-template-columns:1fr 1fr}
+.card h3{margin:0 0 4px;font-size:15.5px}
+.card .hint{color:var(--muted);font-size:13px;margin:0 0 12px}
+.chartbox{position:relative;height:270px}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{text-align:left;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line)}
+td{padding:10px;border-bottom:1px solid #f0ebe2}
+td.n,th.n{text-align:right}
+.pill{display:inline-block;padding:2px 10px;border-radius:999px;font-size:12px;font-weight:600}
+.p-star{background:#e3f1e8;color:var(--good)}.p-plow{background:#e6eef5;color:var(--blue)}.p-puz{background:#fbf0dc;color:var(--warn)}.p-dog{background:#f8e3e1;color:var(--bad)}
+.insight{border-left:3px solid var(--gold);padding:10px 14px;background:#fbf7ef;border-radius:0 10px 10px 0;margin:10px 0}
+.insight b{display:block;margin-bottom:2px}
+.ai{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#7a5a1d;background:#f6e7c8;border-radius:999px;padding:3px 10px}
+.btn{all:unset;cursor:pointer;border-radius:9px;padding:9px 16px;font-weight:600;font-size:14px;display:inline-flex;gap:6px;align-items:center}
+.btn.pri{background:var(--tomato);color:#fff}.btn.pri:hover{background:#8e2620}
+.btn.sec{border:1px solid var(--line);background:#fff}.btn.sec:hover{border-color:var(--ink)}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+input,select,textarea{font:inherit;padding:9px 12px;border:1px solid var(--line);border-radius:9px;background:#fff;width:100%}
+textarea{resize:vertical}
+label{display:grid;gap:5px;font-weight:600;font-size:13px}
+.stack{display:grid;gap:12px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1f1c18;color:#fff;padding:11px 18px;border-radius:10px;font-size:14px;opacity:0;transition:.25s;pointer-events:none}
+.toast.on{opacity:1}
+.email-prev{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.email-prev .eh{background:#22301f;color:#fff;padding:18px 22px;font-family:Fraunces,serif;font-size:22px}
+.email-prev .eb{padding:18px 22px;white-space:pre-wrap;line-height:1.6}
+.chatlog{height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:4px}
+.m{max-width:80%;padding:10px 14px;border-radius:12px;line-height:1.5}
+.m.u{align-self:flex-end;background:var(--tomato);color:#fff}
+.m.a{align-self:flex-start;background:#f6f1e8;border:1px solid var(--line)}
+.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.chips button{all:unset;cursor:pointer;border:1px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:13px}
+.chips button:hover{border-color:var(--tomato);color:var(--tomato)}
+.src{font-size:12px;color:var(--muted);margin-top:8px}
+@media (max-width:900px){.app{grid-template-columns:1fr}aside{position:static;height:auto}aside .foot{position:static;margin-top:16px}.kpis{grid-template-columns:1fr 1fr}.r21,.r11{grid-template-columns:1fr}main{padding:20px}}
+</style>
+</head><body>
+<div class="banner"><b>Demo dashboard</b> · Every number here is <b>sample data</b>. The live version would pull real sales from the Shift4 POS.</div>
+<div class="app">
+<aside>
+  <div class="brand">Giacobbi's<small>Owner dashboard</small></div>
+  <nav>
+    <button data-t="overview" class="on">📈 Sales & forecast</button>
+    <button data-t="menu">🍝 Menu editor</button>
+    <button data-t="profit">💰 Menu profitability</button>
+    <button data-t="market">🏙️ Market prices</button>
+    <button data-t="catering">✉️ Catering campaigns</button>
+    <button data-t="ask">✨ Ask your business</button>
+  </nav>
+  <div class="foot">Signed in as <b>Owner</b> (demo)<br><a href="/">← View website</a></div>
+</aside>
+<main>
+
+<!-- OVERVIEW -->
+<section class="tab on" id="t-overview">
+  <h1>Good evening</h1>
+  <p class="lede">Here's how the last 4 weeks went and what the next two are likely to look like.</p>
+  <div class="kpis" id="kpis"></div>
+  <div class="row r21">
+    <div class="card"><h3>Daily sales, with a 14-day forecast</h3><p class="hint">Solid line is actual sales. The dashed line is the forecast, based on each weekday's recent average and trend.</p><div class="chartbox"><canvas id="cSales"></canvas></div></div>
+    <div class="card"><span class="ai">✨ AI insights</span>
+      <div class="insight"><b>Fridays are carrying the week</b>Friday averages about 1.6× a Wednesday. Consider a Wednesday pasta special or a "Nonna night" to build the slow nights.</div>
+      <div class="insight"><b>Prep 15% more lasagna for Saturday</b>The forecast shows a busy weekend, and lasagna sells out first on the top Saturdays.</div>
+      <div class="insight"><b>Catering is trending up</b>Office catering requests rose 3 weeks in a row. It's a good time to send a holiday-party email.</div>
+    </div>
+  </div>
+  <div class="row r11">
+    <div class="card"><h3>Top menu items (last 28 days)</h3><p class="hint">Units sold</p><div class="chartbox"><canvas id="cTop"></canvas></div></div>
+    <div class="card"><h3>Sales by channel</h3><p class="hint">Dine-in, pickup, delivery and catering</p><div class="chartbox"><canvas id="cChan"></canvas></div></div>
+  </div>
+</section>
+
+<!-- MENU EDITOR -->
+<section class="tab" id="t-menu">
+  <h1>Menu editor</h1>
+  <p class="lede">Change a price or description here and the website, the chatbot and the AI-search data all update together.</p>
+  <div class="card">
+    <table id="menuTbl"><thead><tr><th>Item</th><th>Section</th><th>Description</th><th class="n">Price</th><th></th></tr></thead><tbody></tbody></table>
+    <div style="display:flex;gap:10px;margin-top:16px"><button class="btn sec" onclick="addItem()">+ Add item</button><button class="btn pri" onclick="toast('Demo: in the live version this publishes to the website instantly')">Publish changes</button></div>
+  </div>
+</section>
+
+<!-- PROFIT -->
+<section class="tab" id="t-profit">
+  <h1>Menu profitability</h1>
+  <p class="lede">Which dishes earn the most per plate, and which ones sell. Food cost comes from recipe quantities and supplier prices.</p>
+  <div class="row r11">
+    <div class="card"><h3>Popularity vs. profit per plate</h3><p class="hint">Top right are Stars. Bottom left are worth rethinking.</p><div class="chartbox" style="height:330px"><canvas id="cMatrix"></canvas></div></div>
+    <div class="card"><span class="ai">✨ Recommendations</span><div id="profitRecs"></div></div>
+  </div>
+  <div class="card"><table id="profitTbl"><thead><tr><th>Item</th><th class="n">Price</th><th class="n">Food cost</th><th class="n">Food cost %</th><th class="n">Profit / plate</th><th class="n">Sold (28d)</th><th class="n">Total profit</th><th>Class</th></tr></thead><tbody></tbody></table></div>
+</section>
+
+<!-- MARKET -->
+<section class="tab" id="t-market">
+  <h1>Market prices</h1>
+  <p class="lede">How your prices compare with other Italian restaurants nearby. The live version would refresh this from public menus each month.</p>
+  <div class="card"><h3>Your price vs. the nearby average</h3><p class="hint">Sample comparison with three anonymized nearby Italian restaurants</p><div class="chartbox" style="height:300px"><canvas id="cMarket"></canvas></div></div>
+  <div class="card" style="margin-top:16px"><table id="mktTbl"><thead><tr><th>Dish</th><th class="n">Giacobbi's</th><th class="n">Nearby A</th><th class="n">Nearby B</th><th class="n">Nearby C</th><th class="n">vs. average</th><th>Suggestion</th></tr></thead><tbody></tbody></table>
+  <p class="src">Sample data. Competitor names are hidden in this demo.</p></div>
+</section>
+
+<!-- CATERING -->
+<section class="tab" id="t-catering">
+  <h1>Catering campaigns</h1>
+  <p class="lede">Pick a list, let AI draft the email in the restaurant's voice, then review it and send.</p>
+  <div class="kpis" style="grid-template-columns:repeat(3,1fr)">
+    <div class="card kpi"><div class="l">Catering contacts</div><div class="v">412</div><div class="d">Offices, past events, newsletter</div></div>
+    <div class="card kpi"><div class="l">Last campaign open rate</div><div class="v">47%</div><div class="d up">Restaurant average is about 30%</div></div>
+    <div class="card kpi"><div class="l">Catering booked from email</div><div class="v">$3,860</div><div class="d">Last 90 days</div></div>
+  </div>
+  <div class="row r11">
+    <div class="card stack">
+      <label>Audience<select id="aud"><option value="office">Office & medical campus contacts (186)</option><option value="past">Past catering customers (142)</option><option value="all">Everyone (412)</option></select></label>
+      <label>Occasion<select id="occ"><option value="holiday">Holiday parties</option><option value="lunch">Office lunch</option><option value="grad">Graduation season</option><option value="bills">Bills game day</option></select></label>
+      <label>Offer (optional)<input id="offer" placeholder="e.g. Free tray of meatballs on orders over 30 guests"></label>
+      <div style="display:flex;gap:10px"><button class="btn pri" onclick="draft()">✨ Draft with AI</button><button class="btn sec" onclick="toast('Demo: sending is turned off. The live version sends through an email service with unsubscribe handling.')">Send campaign</button></div>
+    </div>
+    <div class="email-prev"><div class="eh">Giacobbi's Cucina Citta</div><div class="eb" id="emailBody">Choose a list and an occasion, then click "Draft with AI."</div></div>
+  </div>
+</section>
+
+<!-- ASK -->
+<section class="tab" id="t-ask">
+  <h1>Ask your business</h1>
+  <p class="lede">Ask about sales, menu and catering in plain English.</p>
+  <div class="card">
+    <div class="chatlog" id="log"><div class="m a">Ciao! Ask me anything about the restaurant's numbers. Try one of the questions below.</div></div>
+    <div class="chips" id="askChips"></div>
+    <form id="askForm" style="display:flex;gap:10px"><input id="askIn" placeholder="e.g. What was our best night last month?"><button class="btn pri">Ask</button></form>
+    <p class="src">Demo answers come from the sample data on this page.</p>
+  </div>
+</section>
+
+</main></div>
+<div class="toast" id="toast"></div>
+
+<script>
+// ---------- sample data (deterministic) ----------
+let seed=7; const rnd=()=>{seed=(seed*16807)%2147483647;return (seed-1)/2147483646};
+const fmt=n=>'$'+Math.round(n).toLocaleString();
+const ITEMS=[
+ {n:'Lasagna',s:'Pasta',p:22,c:6.1,u:612,d:'Layered with ricotta, meat sauce and mozzarella'},
+ {n:'Chicken Parmesan',s:'Entrées',p:24,c:7.4,u:688,d:'Breaded cutlet, red sauce, melted mozzarella, side of pasta'},
+ {n:'Tortellini alla Giacobbi',s:'Pasta',p:23,c:6.6,u:441,d:'The house tortellini'},
+ {n:'Eggplant Lasagna',s:'Pasta',p:21,c:5.2,u:268,d:'Fried eggplant in place of pasta sheets'},
+ {n:'Chicken Milanese',s:'Entrées',p:24,c:7.9,u:307,d:'Two pan-fried cutlets with arugula and grape tomatoes'},
+ {n:'Spaghetti & Meatballs',s:'Pasta',p:19,c:4.3,u:395,d:'Red sauce, the way it should be'},
+ {n:'Veal Marsala',s:'Entrées',p:31,c:13.2,u:118,d:'Mushroom Marsala sauce'},
+ {n:'Peanut Butter Pie',s:'Dolci',p:9,c:1.9,u:356,d:'A guest favorite'},
+ {n:'Bread Service',s:'Antipasti',p:4,c:0.9,u:520,d:'Warm bread with house accompaniments'},
+ {n:'Seafood Linguine',s:'Pasta',p:29,c:12.6,u:96,d:'Shrimp, clams and calamari'},
+];
+// 28 days actual; restaurant closed Mon/Tue
+const today=new Date(); today.setHours(0,0,0,0);
+const base={0:4600,3:3300,4:3900,5:6300,6:6900}; // Sun, Wed, Thu, Fri, Sat
+const days=[];
+for(let i=27;i>=0;i--){const d=new Date(today);d.setDate(d.getDate()-i);const w=d.getDay();const open=w in base;
+  days.push({d,open,v:open?base[w]*(0.86+rnd()*0.28)*(1+(27-i)*0.004):null});}
+const fc=[];
+for(let i=1;i<=14;i++){const d=new Date(today);d.setDate(d.getDate()+i);const w=d.getDay();const open=w in base;
+  const hist=days.filter(x=>x.open&&x.d.getDay()===w).map(x=>x.v);
+  const avg=hist.length?hist.reduce((a,b)=>a+b)/hist.length:null; fc.push({d,open,v:open?avg*1.03:null});}
+const total=days.reduce((a,x)=>a+(x.v||0),0);
+const covers=Math.round(total/41);
+const lbl=d=>d.toLocaleDateString('en-US',{month:'short',day:'numeric'});
+
+document.getElementById('kpis').innerHTML=[
+ ['Sales (28 days)',fmt(total),'▲ 6.2% vs prior 28 days','up'],
+ ['Guests served',covers.toLocaleString(),'▲ 4.1%','up'],
+ ['Average check',fmt(total/covers)+'.00','▲ $0.80','up'],
+ ['Next 14 days (forecast)',fmt(fc.reduce((a,x)=>a+(x.v||0),0)),'Busiest night: Saturday',''],
+].map(([l,v,d,c])=>`<div class="card kpi"><div class="l">${l}</div><div class="v">${v}</div><div class="d ${c}">${d}</div></div>`).join('');
+
+Chart.defaults.font.family='Inter'; Chart.defaults.color='#6f675c';
+new Chart(cSales,{type:'line',data:{labels:[...days,...fc].map(x=>lbl(x.d)),datasets:[
+ {label:'Actual',data:[...days.map(x=>x.v),...fc.map(()=>null)],borderColor:'#b3342a',backgroundColor:'rgba(179,52,42,.08)',fill:true,tension:.3,spanGaps:true,pointRadius:2},
+ {label:'Forecast',data:[...days.map((x,i)=>i===days.length-1?x.v:null),...fc.map(x=>x.v)],borderColor:'#2f4a36',borderDash:[6,5],tension:.3,spanGaps:true,pointRadius:2}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>'$'+v/1000+'k'}},x:{ticks:{maxTicksLimit:10}}}}});
+const topItems=[...ITEMS].sort((a,b)=>b.u-a.u).slice(0,7);
+new Chart(cTop,{type:'bar',data:{labels:topItems.map(x=>x.n),datasets:[{data:topItems.map(x=>x.u),backgroundColor:'#c9a35a',borderRadius:6}]},options:{indexAxis:'y',maintainAspectRatio:false,plugins:{legend:{display:false}}}});
+new Chart(cChan,{type:'doughnut',data:{labels:['Dine-in','Pickup','DoorDash','Catering'],datasets:[{data:[58,19,11,12],backgroundColor:['#b3342a','#c9a35a','#3d6b8c','#2f4a36']}]},options:{maintainAspectRatio:false,plugins:{legend:{position:'right'}},cutout:'62%'}});
+
+// ---------- menu editor ----------
+function renderMenu(){menuTbl.tBodies[0].innerHTML=ITEMS.map((x,i)=>`<tr>
+ <td><input value="${x.n}" onchange="ITEMS[${i}].n=this.value"></td>
+ <td style="width:130px"><select onchange="ITEMS[${i}].s=this.value">${['Antipasti','Pasta','Entrées','Dolci'].map(s=>`<option ${s===x.s?'selected':''}>${s}</option>`).join('')}</select></td>
+ <td><input value="${x.d}" id="desc${i}" onchange="ITEMS[${i}].d=this.value"></td>
+ <td class="n" style="width:100px"><input value="${x.p}" type="number" step="0.5" onchange="ITEMS[${i}].p=+this.value" style="text-align:right"></td>
+ <td style="width:150px"><button class="btn sec" onclick="aiDesc(${i})">✨ Rewrite</button></td></tr>`).join('');}
+const voices=['Made the way the Jacobbi family has made it for decades: ','A house favorite: ','Straight from the family kitchen: '];
+function aiDesc(i){const x=ITEMS[i];const base=x.d.replace(/^(Made the way.*?: |A house favorite: |Straight from the family kitchen: )/,'');x.d=voices[i%3]+base.charAt(0).toLowerCase()+base.slice(1)+'.';document.getElementById('desc'+i).value=x.d;toast('AI rewrote the description. Review it, then publish.');}
+function addItem(){ITEMS.push({n:'New dish',s:'Pasta',p:20,c:6,u:0,d:'Describe the dish'});renderMenu();}
+renderMenu();
+
+// ---------- profitability ----------
+const avgU=ITEMS.reduce((a,x)=>a+x.u,0)/ITEMS.length, avgM=ITEMS.reduce((a,x)=>a+(x.p-x.c),0)/ITEMS.length;
+const cls=x=>{const hiU=x.u>=avgU,hiM=(x.p-x.c)>=avgM;return hiU&&hiM?['Star','p-star']:hiU?['Plowhorse','p-plow']:hiM?['Puzzle','p-puz']:['Rethink','p-dog']};
+profitTbl.tBodies[0].innerHTML=[...ITEMS].sort((a,b)=>(b.p-b.c)*b.u-(a.p-a.c)*a.u).map(x=>{const[c,k]=cls(x);const pct=x.c/x.p*100;
+ return `<tr><td><b>${x.n}</b></td><td class="n">$${x.p.toFixed(2)}</td><td class="n">$${x.c.toFixed(2)}</td><td class="n" style="color:${pct>35?'var(--bad)':'inherit'}">${pct.toFixed(0)}%</td><td class="n">$${(x.p-x.c).toFixed(2)}</td><td class="n">${x.u}</td><td class="n"><b>${fmt((x.p-x.c)*x.u)}</b></td><td><span class="pill ${k}">${c}</span></td></tr>`}).join('');
+new Chart(cMatrix,{type:'scatter',data:{datasets:[{data:ITEMS.map(x=>({x:x.u,y:x.p-x.c,n:x.n})),backgroundColor:ITEMS.map(x=>({Star:'#2e7d4f',Plowhorse:'#3d6b8c',Puzzle:'#b7791f',Rethink:'#b3342a'})[cls(x)[0]]),pointRadius:8}]},
+ options:{maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>`${c.raw.n}: ${c.raw.x} sold, $${c.raw.y.toFixed(2)}/plate`}}},scales:{x:{title:{display:true,text:'Units sold (28 days)'}},y:{title:{display:true,text:'Profit per plate'},ticks:{callback:v=>'$'+v}}}}});
+profitRecs.innerHTML=`
+ <div class="insight"><b>Chicken Parm is your workhorse</b>It's the top seller, at a healthy 31% food cost. Raising it $1 adds about $690 a month with little risk to demand.</div>
+ <div class="insight"><b>Seafood Linguine and Veal Marsala: high cost, slow sellers</b>Both run above 40% food cost and sell fewer than 120 plates a month. Try making them weekend specials so less inventory sits in the walk-in.</div>
+ <div class="insight"><b>Promote the Eggplant Lasagna</b>It has a strong margin and the best story on the menu (it came from Carmine's). It just needs more people to see it, so feature it on the site and have servers mention it.</div>`;
+
+// ---------- market ----------
+const MK=[['Lasagna',22,24,21,26],['Chicken Parmesan',24,26,23,27],['Chicken Milanese',24,25,24,28],['Spaghetti & Meatballs',19,21,18,22],['Veal Marsala',31,32,29,34],['Seafood Linguine',29,31,30,33]];
+mktTbl.tBodies[0].innerHTML=MK.map(([n,g,a,b,c])=>{const av=(a+b+c)/3,d=g-av;return `<tr><td><b>${n}</b></td><td class="n"><b>$${g}</b></td><td class="n">$${a}</td><td class="n">$${b}</td><td class="n">$${c}</td><td class="n ${d<0?'down':'up'}">${d<0?'−':'+'}$${Math.abs(d).toFixed(2)}</td><td>${d<-1?'Room to raise about $1':'Priced in line'}</td></tr>`}).join('');
+new Chart(cMarket,{type:'bar',data:{labels:MK.map(x=>x[0]),datasets:[{label:"Giacobbi's",data:MK.map(x=>x[1]),backgroundColor:'#b3342a',borderRadius:6},{label:'Nearby average',data:MK.map(x=>((x[2]+x[3]+x[4])/3).toFixed(2)),backgroundColor:'#d9cdb8',borderRadius:6}]},options:{maintainAspectRatio:false,plugins:{legend:{position:'bottom'}},scales:{y:{ticks:{callback:v=>'$'+v}}}}});
+
+// ---------- catering email ----------
+function draft(){
+ const o=occ.value, offer=offer_.value.trim();
+ const subj={holiday:'Let us cater your holiday party 🎄',lunch:'Lunch for the office, handled',grad:'Graduation party trays from Giacobbi\'s',bills:'Game day trays, Bills edition'}[o];
+ const hook={holiday:'The holidays are coming up fast, and party calendars fill up just as quickly.',lunch:'Feeding a team shouldn\'t mean another sad sandwich platter.',grad:'Graduation season means a crowd, and a crowd means trays.',bills:'Sundays in Buffalo call for a full table.'}[o];
+ emailBody.textContent=`Subject: ${subj}
+
+${hook}
+
+Let Giacobbi's handle the food. Our drop-off catering brings the family recipes our guests love straight to your door: lasagna, chicken parm, the eggplant lasagna from Carmine's, salads and plenty of bread.
+${offer?'\n'+offer+'\n':''}
+• Trays sized for 10 to 100+ guests
+• Delivered hot and ready to serve
+• Just tell us the date and headcount, and we'll plan the rest
+
+Reply to this email or call (716) 834-4000 to book.
+
+Grazie,
+The Jacobbi family
+Giacobbi's Cucina Citta · 59 Allen St., Buffalo
+
+Unsubscribe`;
+ toast('Draft ready. Edit anything before sending.');
+}
+const offer_=document.getElementById('offer');
+
+// ---------- ask ----------
+const best=days.filter(x=>x.open).sort((a,b)=>b.v-a.v)[0];
+const QA=[
+ ['What was our best night?',()=>`Your best night in the last 28 days was ${best.d.toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})} at ${fmt(best.v)}.`],
+ ['Which dish should I raise the price on?',()=>`Chicken Parmesan. It's your top seller at 31% food cost, and nearby restaurants charge about $1.33 more on average. A $1 increase adds about $690 a month.`],
+ ['How much should we prep for Saturday?',()=>`Saturday is forecast at ${fmt(fc.find(x=>x.d.getDay()===6).v)}. Based on recent Saturdays, plan for roughly 48 lasagna, 52 chicken parm and 30 tortellini.`],
+ ['How is catering doing?',()=>`Catering is about 12% of sales, and requests rose three weeks in a row. The last email campaign booked $3,860. Want me to draft a holiday-party email?`],
+];
+askChips.innerHTML=QA.map((q,i)=>`<button onclick="ask(${i})">${q[0]}</button>`).join('');
+function say(t,c){const d=document.createElement('div');d.className='m '+c;d.textContent=t;log.append(d);log.scrollTop=log.scrollHeight;}
+function ask(i){say(QA[i][0],'u');setTimeout(()=>say(QA[i][1](),'a'),500);}
+askForm.onsubmit=e=>{e.preventDefault();const q=askIn.value.trim();if(!q)return;askIn.value='';say(q,'u');
+ const s=q.toLowerCase();const i=/best|record|biggest/.test(s)?0:/price|raise|charge/.test(s)?1:/prep|saturday|forecast/.test(s)?2:/cater|email/.test(s)?3:-1;
+ setTimeout(()=>say(i>=0?QA[i][1]():'In the live version I\'d answer that from your real Shift4 sales. For this demo, try one of the suggested questions.','a'),500);};
+
+// ---------- tabs + toast ----------
+document.querySelectorAll('aside nav button').forEach(b=>b.onclick=()=>{document.querySelectorAll('aside nav button').forEach(x=>x.classList.toggle('on',x===b));document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('on',t.id==='t-'+b.dataset.t));window.scrollTo(0,0)});
+function toast(t){const el=document.getElementById('toast');el.textContent=t;el.classList.add('on');clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove('on'),2600);}
+</script>
+</body></html>
