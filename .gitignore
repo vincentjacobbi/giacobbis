@@ -1,0 +1,4 @@
+# Family recipe cards stay private until the family approves each one
+recipes/
+# Local preview config
+.claude/
