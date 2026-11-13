@@ -207,7 +207,7 @@ const menuPage = page(
 
 // ---------- Story ----------
 const TIMELINE = [
-  { era: "Where it started", t: "The Charlesgate", d: "The family's first restaurant, on Transit Road in Williamsville, became a local legend. The Buffalo News reviewed it in November 1987." },
+  { era: "Where it started", t: "The Charlesgate", d: "The family's landmark restaurant on Transit Road in Williamsville, remembered as a local legend. The Buffalo News reviewed it in November 1987." },
   { era: "The '90s", t: "Giacobbi's Italian Oven & Rotisserie", d: "Opened at 4715 Transit Road on the Charlesgate site. It served Sicilian specialties, wood-fired pizza and family-style portions meant to feed the whole table. A second location, Giacobbi's Trattoria, opened on Main Street at Eggert." },
   { era: "Decades on Transit", t: "Carmine's", d: "For years the family ran Carmine's on Transit Road. That's where the eggplant lasagna became a favorite. A fire closed it in 2015." },
   { era: "2016 to today", t: "Giacobbi's Cucina Citta", d: "Cousins Billy and Mike Jacobbi brought the family's recipes downtown to 59 Allen Street in Allentown and served the first meal in May 2016." },
