@@ -127,3 +127,15 @@ input:focus,select:focus,textarea:focus{outline:2px solid var(--gold);border-col
 .chat-input input:focus{outline:none}
 .chat-input button{border:0;background:var(--tomato);color:#fff;padding:0 18px;font-weight:600;cursor:pointer}
 .typing{opacity:.6;font-style:italic}
+
+/* lineage */
+.timeline{margin-top:40px;border-left:2px solid var(--gold);padding-left:28px;display:grid;gap:34px}
+.tl{position:relative}
+.tl::before{content:"";position:absolute;left:-36px;top:6px;width:14px;height:14px;border-radius:50%;background:var(--paper);border:3px solid var(--tomato)}
+.tl-era{font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);font-weight:700}
+.tl h3{font-size:26px;margin:4px 0}
+.tl p{color:var(--muted);margin:0}
+.press{display:grid;gap:12px;margin-top:18px}
+.pr-item{display:flex;gap:18px;align-items:flex-start;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 18px}
+.pr-y{font-family:var(--serif);font-size:24px;color:var(--tomato);min-width:64px}
+.pr-item span{color:var(--muted)}

@@ -54,6 +54,8 @@ const schema = {
   url: "https://giacobbis.com/",
   address: { "@type": "PostalAddress", streetAddress: "59 Allen St", addressLocality: R.city, addressRegion: R.region, postalCode: R.zip, addressCountry: "US" },
   areaServed: "Buffalo, NY",
+  foundingDate: "2016-05",
+  founder: [{ "@type": "Person", name: "Billy Jacobbi" }, { "@type": "Person", name: "Mike Jacobbi" }],
   acceptsReservations: R.resy,
   hasMenu: "https://giacobbis.com/menu.html",
   sameAs: [R.facebook, R.resy],
@@ -159,9 +161,9 @@ const home = page(
 <section class="alt"><div class="wrap split">
   <div>
     <div class="eyebrow" style="color:var(--tomato)">Our family</div>
-    <h2>Decades of Western New York cooking</h2>
-    <p class="sub">The Jacobbi family has spent decades in Western New York restaurants. After the family's longtime restaurant, Carmine's on Transit Road, was lost to a fire, they brought those recipes downtown and opened Giacobbi's on Allen Street in 2016.</p>
-    <p class="quote">Cherished family recipes, alongside something new.</p>
+    <h2>A Buffalo restaurant family, since the Charlesgate</h2>
+    <p class="sub">The family has cooked for Western New York for generations: the Charlesgate on Transit Road, Giacobbi's Italian Oven, then Carmine's. In 2016, cousins Billy and Mike Jacobbi brought the recipes downtown to Allen Street.</p>
+    <p class="quote">When you order from us, you order from our lineage in Buffalo.</p>
     <a class="btn primary" href="/story.html">Read the family story</a>
   </div>
   <div class="plate"><span>Photo placeholder · family photo or signature dish</span></div>
@@ -204,23 +206,44 @@ const menuPage = page(
 );
 
 // ---------- Story ----------
+const TIMELINE = [
+  { era: "Where it started", t: "The Charlesgate", d: "The family's first restaurant, on Transit Road in Williamsville, became a local legend. The Buffalo News reviewed it in November 1987." },
+  { era: "The '90s", t: "Giacobbi's Italian Oven & Rotisserie", d: "Opened at 4715 Transit Road on the Charlesgate site. It served Sicilian specialties, wood-fired pizza and family-style portions meant to feed the whole table. A second location, Giacobbi's Trattoria, opened on Main Street at Eggert." },
+  { era: "Decades on Transit", t: "Carmine's", d: "For years the family ran Carmine's on Transit Road. That's where the eggplant lasagna became a favorite. A fire closed it in 2015." },
+  { era: "2016 to today", t: "Giacobbi's Cucina Citta", d: "Cousins Billy and Mike Jacobbi brought the family's recipes downtown to 59 Allen Street in Allentown and served the first meal in May 2016." },
+];
+const PRESS = [
+  { y: "1987", src: "The Buffalo News", t: "Reviewed The Charlesgate on Transit Road" },
+  { y: "1995", src: "The Buffalo News", t: "Janice Okun reviewed Giacobbi's Italian Oven & Rotisserie and named the grilled eggplant pizza its best dish" },
+  { y: "2016", src: "Buffalo Rising", t: "Covered the family bringing its recipes to Allen Street after Carmine's" },
+  { y: "2016", src: "The Buffalo News", t: "Photographed Billy and Mike Jacobbi with the spinach and steak pizza and the shrimp pappardelle" },
+];
 const storyPage = page(
-  "Our Family | Giacobbi's Cucina Citta",
-  "The Jacobbi family's history in Western New York restaurants, from Carmine's on Transit Road to Giacobbi's Cucina Citta on Allen Street.",
+  "Our Family | A Buffalo Restaurant Lineage | Giacobbi's Cucina Citta",
+  "The Jacobbi family's Buffalo restaurant history, from The Charlesgate and Giacobbi's Italian Oven on Transit Road to Carmine's and Giacobbi's Cucina Citta on Allen Street.",
   "Our Family",
   `
-<section><div class="wrap" style="max-width:760px">
+<section><div class="wrap" style="max-width:820px">
   <div class="eyebrow" style="color:var(--tomato)">Our family</div>
-  <h1 style="font-family:var(--serif);font-weight:500;font-size:56px;margin:8px 0 20px;line-height:1.05">From Transit Road to Allen Street</h1>
-  <p class="sub">For decades, the Jacobbi family ran Carmine's on Transit Road. When a fire took that restaurant, the family moved its recipes downtown, and Giacobbi's Cucina Citta served its first meal on Allen Street in May 2016.</p>
-  <p class="note" style="margin:28px 0"><b>Staging note:</b> this page is a frame for the family to fill in. The stories, photos and recipes below are placeholders to show the layout.</p>
+  <h1 style="font-family:var(--serif);font-weight:500;font-size:56px;margin:8px 0 20px;line-height:1.05">A Buffalo restaurant family, since the Charlesgate</h1>
+  <p class="sub">When you order from Giacobbi's, you're ordering from a family that has cooked for Western New York for generations: the Charlesgate, Giacobbi's on Transit, Carmine's, and now Allen Street.</p>
 
-  <h2 style="font-size:32px;margin-top:48px">The recipes</h2>
-  <div class="grid" style="margin-top:20px">
-    <div class="card"><span class="eyebrow" style="color:var(--basil)">From Carmine's</span><h3 style="margin-top:6px">Eggplant Lasagna</h3><p style="color:var(--muted)">Placeholder: the story of where this recipe started, who made it first, and what makes it different.</p></div>
-    <div class="card"><span class="eyebrow" style="color:var(--basil)">Sunday sauce</span><h3 style="margin-top:6px">The Red Sauce</h3><p style="color:var(--muted)">Placeholder: the sauce behind the menu, as much of the method as the family wants to share, and the memories that go with it.</p></div>
-    <div class="card"><span class="eyebrow" style="color:var(--basil)">The namesake</span><h3 style="margin-top:6px">Tortellini alla Giacobbi</h3><p style="color:var(--muted)">Placeholder: how the dish got the family name.</p></div>
+  <div class="timeline">
+    ${TIMELINE.map((x) => `<div class="tl"><div class="tl-era">${x.era}</div><h3>${x.t}</h3><p>${x.d}</p></div>`).join("")}
   </div>
+
+  <h2 style="font-size:32px;margin-top:64px">In the papers</h2>
+  <p class="sub">The family's restaurants have been covered in Buffalo food writing for decades.</p>
+  <div class="press">${PRESS.map((x) => `<div class="pr-item"><span class="pr-y">${x.y}</span><div><b>${x.src}</b><br><span>${x.t}</span></div></div>`).join("")}</div>
+  <p class="note" style="margin-top:18px"><b>Staging note:</b> the original clippings from the family archive (1987 and 1995) will be shown here as scans.</p>
+
+  <h2 style="font-size:32px;margin-top:64px">The family recipes</h2>
+  <div class="grid" style="margin-top:20px">
+    <div class="card"><span class="eyebrow" style="color:var(--basil)">From Carmine's</span><h3 style="margin-top:6px">Eggplant Lasagna</h3><p style="color:var(--muted)">Fried eggplant layered in place of pasta. Placeholder for the family's story behind it.</p></div>
+    <div class="card"><span class="eyebrow" style="color:var(--basil)">From the Transit Road days</span><h3 style="margin-top:6px">Beans & Greens</h3><p style="color:var(--muted)">Sautéed fava beans and greens were an old-time favorite back in 1995 and are still a Buffalo Italian staple. Placeholder for the family recipe card.</p></div>
+    <div class="card"><span class="eyebrow" style="color:var(--basil)">The namesake</span><h3 style="margin-top:6px">Tortellini alla Giacobbi</h3><p style="color:var(--muted)">Placeholder for how the dish got the family name.</p></div>
+  </div>
+  <p class="note" style="margin-top:18px"><b>Staging note:</b> the recipe cards from the family's Recipes folder will be transcribed here, with the family choosing what to share.</p>
   <p style="margin-top:36px">Have a question about a family dish? <a href="#" data-open-chat>Ask our concierge →</a></p>
 </div></section>`
 );
@@ -261,7 +284,7 @@ const cateringPage = page(
 // ---------- GEO / crawler files ----------
 const llms = `# Giacobbi's Cucina Citta
 
-> Family-owned Italian-American restaurant at 59 Allen St. (at Franklin), Buffalo, NY 14202, in the Allentown neighborhood. Run by the Jacobbi family, whose earlier restaurant was Carmine's on Transit Road. Open since May 2016.
+> Family-owned Italian-American restaurant at 59 Allen St. (at Franklin), Buffalo, NY 14202, in the Allentown neighborhood. Owned by cousins Billy and Mike Jacobbi, part of a Buffalo restaurant family whose restaurants include The Charlesgate (Transit Road, Williamsville), Giacobbi's Italian Oven & Rotisserie (4715 Transit Road, 1990s), Giacobbi's Trattoria (Main St. at Eggert) and Carmine's (Transit Road, closed after a 2015 fire). Open since May 2016.
 
 ## Essentials
 - Phone: ${R.phone}
